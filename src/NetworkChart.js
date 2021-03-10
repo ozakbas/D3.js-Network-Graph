@@ -3,8 +3,8 @@ import * as d3 from "d3";
 
 function NetworkChart({ data }) {
   useEffect(() => {
-    const width = 1500;
-    const height = 1200;
+    const width = 1800;
+    const height = 900;
 
     console.log(data);
 
@@ -25,16 +25,30 @@ function NetworkChart({ data }) {
     //Initializing force simulation
     const simulation = d3
       .forceSimulation()
-      .force("link", d3.forceLink())
-      .force("charge", d3.forceManyBody().strength(-250))
-      .force("collide", d3.forceCollide())
+      .force(
+        "link",
+        d3
+          .forceLink()
+          .distance(function (d) {
+            let w = d.weight;
+
+            if (w > 1 && w <= 50) return 270;
+            else if (w > 50 && w <= 200) return 250;
+            else if (w > 200) return 200;
+          })
+          .strength(0.7)
+      )
+      .force("forceX", d3.forceX().strength(0.1))
+      .force("forceY", d3.forceY().strength(0.4))
+      .force("charge", d3.forceManyBody().strength(-800))
+      .force("collide", d3.forceCollide().strength(0.5).radius(30))
       .force("center", d3.forceCenter(width / 2, height / 2))
       .force("y", d3.forceY(0))
       .force("x", d3.forceX(0));
 
     //Drag functions
     const dragStart = (e, d) => {
-      if (!e.active) simulation.alphaTarget(0.3).restart();
+      if (!e.active) simulation.alphaTarget(0.1).restart();
       d.fx = d.x;
       d.fy = d.y;
     };
@@ -57,7 +71,14 @@ function NetworkChart({ data }) {
       .selectAll("line")
       .data(data.links)
       .enter()
-      .append("line");
+      .append("line")
+      .attr("stroke-width", function (d) {
+        return d.weight / 20 + 1;
+      })
+      .style("stroke", function (d) {
+        return `rgba(0, ${d.weight * 5}, 0,  ${d.weight / 25})`;
+      })
+      .style("opacity", 0.2);
 
     //Creating nodes
     const node = d3
@@ -68,9 +89,6 @@ function NetworkChart({ data }) {
       .append("div")
       .attr("class", (d) => {
         return "node node-" + d.name;
-      })
-      .text(function (d) {
-        return d.name;
       })
       .call(
         d3.drag().on("start", dragStart).on("drag", drag).on("end", dragEnd)
@@ -96,11 +114,19 @@ function NetworkChart({ data }) {
         return process.env.PUBLIC_URL + path;
       })
 
-      .attr("height", 50)
-      .attr("width", 50)
+      .attr("height", 60)
+      .attr("width", 60)
       .on("error", function () {
-        d3.select(this).style("visibility", "hidden");
+        d3.select(this).remove();
       });
+    node
+      .append("text")
+      .text(function (d) {
+        return d.name;
+      })
+      .style("font-size", "12px")
+      .style("color", "#212121")
+      .style("font-weight", "600");
 
     //Setting location when ticked
     const ticked = () => {

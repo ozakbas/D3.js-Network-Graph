@@ -1,12 +1,11 @@
 .links {
-  stroke: rgb(158, 158, 158);
+  stroke: rgba(146, 146, 146, 0.555);
 }
 
 .node {
   position: absolute;
-  height: 15px;
-  width: 15px;
-  border-radius: 30%;
+  height: 30px;
+  width: 80px;
 }
 .tooltip {
   position: absolute;

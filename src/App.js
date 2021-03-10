@@ -13,7 +13,11 @@ function createLinks(nodes, raw) {
     let sourceElement = nodes.find((element) => element.name === source);
     let targetElement = nodes.find((element) => element.name === target);
 
-    lines.push({ source: sourceElement.id, target: targetElement.id });
+    lines.push({
+      source: sourceElement.id,
+      target: targetElement.id,
+      weight: element.weight,
+    });
   });
 
   return lines;
