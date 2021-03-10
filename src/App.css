@@ -1,13 +1,12 @@
 .links {
-  stroke: grey;
+  stroke: rgb(158, 158, 158);
 }
 
-.flag {
+.node {
   position: absolute;
   height: 15px;
   width: 15px;
   border-radius: 30%;
-  background: rgb(121, 108, 179);
 }
 .tooltip {
   position: absolute;

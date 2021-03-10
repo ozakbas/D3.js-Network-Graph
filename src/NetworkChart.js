@@ -3,8 +3,8 @@ import * as d3 from "d3";
 
 function NetworkChart({ data }) {
   useEffect(() => {
-    const width = 1200;
-    const height = 800;
+    const width = 1500;
+    const height = 1200;
 
     console.log(data);
 
@@ -26,7 +26,7 @@ function NetworkChart({ data }) {
     const simulation = d3
       .forceSimulation()
       .force("link", d3.forceLink())
-      .force("charge", d3.forceManyBody().strength(-100))
+      .force("charge", d3.forceManyBody().strength(-250))
       .force("collide", d3.forceCollide())
       .force("center", d3.forceCenter(width / 2, height / 2))
       .force("y", d3.forceY(0))
@@ -67,7 +67,7 @@ function NetworkChart({ data }) {
       .enter()
       .append("div")
       .attr("class", (d) => {
-        return "flag flag-" + d.name;
+        return "node node-" + d.name;
       })
       .text(function (d) {
         return d.name;
@@ -84,6 +84,22 @@ function NetworkChart({ data }) {
       })
       .on("mouseout", () => {
         tooltip.style("opacity", 0).style("left", "0px").style("top", "0px");
+      });
+
+    //domElement.append('img').attr('src', imagePath);
+
+    // Append images
+    node
+      .append("img")
+      .attr("src", function (d) {
+        let path = `/resized-images/${d.name}.jpg`;
+        return process.env.PUBLIC_URL + path;
+      })
+
+      .attr("height", 50)
+      .attr("width", 50)
+      .on("error", function () {
+        d3.select(this).style("visibility", "hidden");
       });
 
     //Setting location when ticked
