@@ -8,19 +8,29 @@ function NetworkChart({ data }) {
 
     console.log(data);
 
-    //Initializing chart
-    const chart = d3
-      .select(".chart")
-      .attr("width", width)
-      .attr("height", height);
-    //.attr("style", "outline: thin solid red;");
 
-    //Creating tooltip
-    const tooltip = d3
-      .select(".container")
-      .append("div")
-      .attr("class", "tooltip")
-      .html("Tooltip");
+      const zoom = d3.zoom()
+      .on('zoom', (event) => {
+        chart.attr('transform', event.transform);
+      })
+      .scaleExtent([1, 40]);
+
+      
+          //Initializing chart
+    const chart = d3
+    .select(".chart")
+    .attr("width", width)
+    .attr("height", height).call(zoom)
+    // This is going to be the country group
+    .append('g');
+  //.attr("style", "outline: thin solid red;");
+
+  //Creating tooltip
+  const tooltip = d3
+    .select(".container")
+    .append("div")
+    .attr("class", "tooltip")
+    .html("Tooltip");
 
     //Initializing force simulation
     const simulation = d3
@@ -102,7 +112,9 @@ function NetworkChart({ data }) {
       })
       .on("mouseout", () => {
         tooltip.style("opacity", 0).style("left", "0px").style("top", "0px");
-      });
+      })
+      .call(zoom);
+      
 
     //domElement.append('img').attr('src', imagePath);
 
