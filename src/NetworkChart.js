@@ -3,34 +3,34 @@ import * as d3 from "d3";
 
 function NetworkChart({ data }) {
   useEffect(() => {
-    const width = 1800;
-    const height = 900;
+    const width = 1680;
+    const height = 800;
 
-    console.log(data);
+    /*
 
+    const zoom = d3.zoom().on("zoom", zoom_function);
 
-      const zoom = d3.zoom()
-      .on('zoom', (event) => {
-        chart.attr('transform', event.transform);
-      })
-      .scaleExtent([1, 40]);
+    function zoom_function(e) {
+      var transform = e.transform;
+      root.style("transform", "translate(0px,0px) scale(" + transform.k + ")");
+    }
 
-      
-          //Initializing chart
+    const root = d3.select(".chartContainer").call(zoom);
+    */
+
+    //Initializing chart
     const chart = d3
-    .select(".chart")
-    .attr("width", width)
-    .attr("height", height).call(zoom)
-    // This is going to be the country group
-    .append('g');
-  //.attr("style", "outline: thin solid red;");
+      .select(".chart")
+      .attr("width", width)
+      .attr("height", height)
+      .append("g");
 
-  //Creating tooltip
-  const tooltip = d3
-    .select(".container")
-    .append("div")
-    .attr("class", "tooltip")
-    .html("Tooltip");
+    //Creating tooltip
+    const tooltip = d3
+      .select(".container")
+      .append("div")
+      .attr("class", "tooltip")
+      .html("Tooltip");
 
     //Initializing force simulation
     const simulation = d3
@@ -41,12 +41,11 @@ function NetworkChart({ data }) {
           .forceLink()
           .distance(function (d) {
             let w = d.weight;
-
             if (w > 1 && w <= 50) return 270;
             else if (w > 50 && w <= 200) return 250;
             else if (w > 200) return 200;
           })
-          .strength(0.7)
+          .strength(0.3)
       )
       .force("forceX", d3.forceX().strength(0.1))
       .force("forceY", d3.forceY().strength(0.4))
@@ -112,15 +111,14 @@ function NetworkChart({ data }) {
       })
       .on("mouseout", () => {
         tooltip.style("opacity", 0).style("left", "0px").style("top", "0px");
-      })
-      .call(zoom);
-      
+      });
 
     //domElement.append('img').attr('src', imagePath);
 
     // Append images
     node
       .append("img")
+      .attr("class", "img")
       .attr("src", function (d) {
         let path = `/resized-images/${d.name}.jpg`;
         return process.env.PUBLIC_URL + path;
