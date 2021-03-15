@@ -1,7 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import * as d3 from "d3";
 
 function NetworkChart({ data }) {
+
+  const [ name, setName ] = useState("")
+  
+
+
   useEffect(() => {
     const width = 1680;
     const height = 800;
@@ -23,7 +28,10 @@ function NetworkChart({ data }) {
       .select(".chart")
       .attr("width", width)
       .attr("height", height)
-      .append("g");
+      .append("g")
+      /*.call(d3.zoom().on("zoom", function (event) {
+        chart.attr("transform", event.transform)
+     }))*/;
 
     //Creating tooltip
     const tooltip = d3
@@ -111,6 +119,9 @@ function NetworkChart({ data }) {
       })
       .on("mouseout", () => {
         tooltip.style("opacity", 0).style("left", "0px").style("top", "0px");
+      })
+      .on("click",function(e, d) {
+        setName(d.name);
       });
 
     //domElement.append('img').attr('src', imagePath);
@@ -171,6 +182,7 @@ function NetworkChart({ data }) {
       <div className="chartContainer">
         <svg className="chart"></svg>
       </div>
+      <div class="tv">{name}</div>
     </div>
   );
 }
