@@ -2,13 +2,15 @@
   stroke: rgba(146, 146, 146, 0.555);
 }
 
-.node {
+.node, .node2 {
   position: absolute;
   height: 10px;
   width: 80px;
 }
 
-.img {
+
+
+.img, .img2  {
   border-radius: 40%;
   transform: translate(-10px);
 }
@@ -26,8 +28,8 @@
 
 .tv {
   position: relative;
-  width: 200px;
-  height: 150px;
+  width: 700px;
+  height: 500px;
   margin: 20px 0;
   background: rgba(200, 200, 200);
   border-radius: 10% / 10%;

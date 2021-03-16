@@ -62,6 +62,7 @@ function App() {
     let finalData = mergeData(nodes, links);
 
     setData(finalData);
+    console.log(data);
 
     setIsLoaded(true);
   }, []);
